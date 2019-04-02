@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 let data = '';
-var key = `AIzaSyA9GRm27RY07Q9sddj0JHrkdh8C5hyLjKo`
+var key = `yourkey`
 var address = `parque+de+aguas+claras`
 https.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${key}`, (resp) => {
   
@@ -29,7 +29,6 @@ https.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&
 
 
 app.get('/', (req, res) => {
-  pdata = JSON.parse(data)
-  res.json( pdata.results[0].geometry.location );
+  res.json( JSON.parse(data) );
 });
 app.listen(3001);
