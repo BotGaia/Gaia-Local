@@ -9,9 +9,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 let data = '';
-var key = `yourkey`
-var address = `parque+de+aguas+claras`
-https.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${key}`, (resp) => {
+https.get('https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOURKEY', (resp) => {
   
   // A chunk of data has been recieved.
   resp.on('data', (chunk) => {
