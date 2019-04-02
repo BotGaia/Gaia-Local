@@ -9,7 +9,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 let data = '';
-https.get('https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOURKEY', (resp) => {
+var key = `yourkey`
+var address = `parque+de+aguas+claras`
+https.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${key}`, (resp) => {
   
   // A chunk of data has been recieved.
   resp.on('data', (chunk) => {
@@ -27,6 +29,7 @@ https.get('https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphit
 
 
 app.get('/', (req, res) => {
-  res.json( JSON.parse(data) );
+  pdata = JSON.parse(data)
+  res.json( pdata.results[0].geometry.location );
 });
 app.listen(3001);
