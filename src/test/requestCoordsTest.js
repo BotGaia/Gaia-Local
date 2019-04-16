@@ -3,7 +3,7 @@
 /* eslint-disable no-undef */
 
 const chai = require('chai');
-const Coords = require('../server/requests/requestCoords.js');
+const Coords = require('../requests/requestCoords.js');
 
 const should = chai.should();
 let lat = '';

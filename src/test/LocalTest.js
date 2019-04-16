@@ -5,7 +5,7 @@
 const chai = require('chai');
 
 const should = chai.should();
-const Local = require('../server/models/Local.js');
+const Local = require('../models/Local.js');
 
 describe('setLatitude', () => {
   it('set latitude', () => {

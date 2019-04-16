@@ -1,6 +1,6 @@
 const express = require('express');
 
-const requestCoords = require('./server/requests/requestCoords');
+const requestCoords = require('./requests/requestCoords');
 
 const router = express.Router();
 
