@@ -1,14 +1,14 @@
 const express = require('express');
 
-const makeLocal = require('../models/makeLocal.js');
+const requestCoords = require('./requests/requestCoords');
 
 const router = express.Router();
 
 router.get('/local', (req, res) => {
-  makeLocal.makeLocal(req.query.address).then((value) => {
+  requestCoords.getCoords(req.query.address).then((value) => {
     res.json({
-      lat: value.latitude,
-      lng: value.longitude,
+      lat: value.getLatitude(),
+      lng: value.getLongitude(),
     });
   }).catch((err) => {
     res.send(err);
