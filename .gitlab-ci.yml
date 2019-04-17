@@ -15,7 +15,7 @@ stages:
 buildLocal:
   stage: build
   script:
-    - docker-compose up --build
+    - docker-compose build
 
 testCheck:
   stage: test
