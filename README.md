@@ -12,12 +12,23 @@ Esse serviço é responsável por pegar a longitude e a latitude a partir do nom
 ### Como rodar
 Primeiro tem que instalar o docker e o docker compose, em seguida rode o projeto como desenvolvimento da seguinte maneira:
 
-$ docker-compose up --build
+``` $ sudo docker-compose up --build ```
 
 Para rodar a folha de estilo, utilize este comando:
 
-$ docker-compose run app /bin/sh -c "cd /app; npm i; npm run lint"
+``` $ sudo docker-compose run app /bin/sh -c "cd /app; npm i; npm run lint" ```
+
+Para rodar os testes, utilize:
+
+``` $ sudo docker-compose run app /bin/sh -c "cd /app; npm i; npm run test" ```
 
 ### Endpoints
-
-Aqui se encontra todas as endpoints desse serviço.
+<table>
+	<tr>
+		<td>GET</td>
+		<td>localhost:3001/local?address={VALOR}</td>
+		<td>address</td>
+		<td>String</td>
+		<td>Recebe as coordenadas do local informados</td>
+	</tr>
+</table>
