@@ -7,10 +7,14 @@ before_script:
   - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
   - pip install docker-compose
 
+variables:
+  LATEST_VER: caleberios/gaia-local:latest-hml
+
 stages:
   - build
   - test
   - quality
+  - deploy
 
 buildLocal:
   stage: build
@@ -26,3 +30,12 @@ staticAnalysis:
   stage: quality
   script:
     - docker-compose run app /bin/sh -c "cd /app; npm i; npm run lint"
+
+deployHomolog:
+  stage: deploy
+  only:
+    - dev
+  script:
+    - docker build -t $LATEST_VER .
+    - echo "$REGISTRY_PASSWORD" | docker login -u "$REGISTRY_USER" --password-stdin
+    - docker push $LATEST_VER && docker image rm $LATEST_VER
