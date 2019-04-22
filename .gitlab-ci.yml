@@ -41,7 +41,7 @@ deployHomolog:
     - echo "$REGISTRY_PASSWORD" | docker login -u "$REGISTRY_USER" --password-stdin
     - docker push $LATEST_VER_HML && docker image rm $LATEST_VER_HML
 
-deployHomolog:
+deployProd:
   stage: deploy
   only:
     - master
