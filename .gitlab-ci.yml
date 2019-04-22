@@ -8,7 +8,8 @@ before_script:
   - pip install docker-compose
 
 variables:
-  LATEST_VER: caleberios/gaia-local:latest-hml
+  LATEST_VER_HML: caleberios/gaia-local:homolog
+  LATEST_VER_PROD: caleberios/gaia-local:latest
 
 stages:
   - build
@@ -24,18 +25,27 @@ buildLocal:
 testCheck:
   stage: test
   script:
-    - docker-compose run app /bin/sh -c "cd /app; npm i; npm run test"
+    - docker-compose run gaialocal /bin/sh -c "cd /app; npm i; npm run test"
 
 staticAnalysis:
   stage: quality
   script:
-    - docker-compose run app /bin/sh -c "cd /app; npm i; npm run lint"
+    - docker-compose run gaialocal /bin/sh -c "cd /app; npm i; npm run lint"
 
 deployHomolog:
   stage: deploy
   only:
     - dev
   script:
-    - docker build -t $LATEST_VER .
+    - docker build -t $LATEST_VER_HML .
     - echo "$REGISTRY_PASSWORD" | docker login -u "$REGISTRY_USER" --password-stdin
-    - docker push $LATEST_VER && docker image rm $LATEST_VER
+    - docker push $LATEST_VER_HML && docker image rm $LATEST_VER_HML
+
+deployHomolog:
+  stage: deploy
+  only:
+    - master
+  script:
+    - docker build -t $LATEST_VER_PROD .
+    - echo "$REGISTRY_PASSWORD" | docker login -u "$REGISTRY_USER" --password-stdin
+    - docker push $LATEST_VER_PROD && docker image rm $LATEST_VER_PROD

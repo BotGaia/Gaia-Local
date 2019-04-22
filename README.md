@@ -16,11 +16,11 @@ Primeiro tem que instalar o docker e o docker compose, em seguida rode o projeto
 
 Para rodar a folha de estilo, utilize este comando:
 
-``` $ sudo docker-compose run app /bin/sh -c "cd /app; npm i; npm run lint" ```
+``` $ sudo docker-compose run gaialocal /bin/sh -c "cd /app; npm i; npm run lint" ```
 
 Para rodar os testes, utilize:
 
-``` $ sudo docker-compose run app /bin/sh -c "cd /app; npm i; npm run test" ```
+``` $ sudo docker-compose run gaialocal /bin/sh -c "cd /app; npm i; npm run test" ```
 
 ### Endpoints
 <table>
