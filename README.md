@@ -29,6 +29,6 @@ Para rodar os testes, utilize:
 		<td>localhost:3001/local?address={VALOR}</td>
 		<td>address</td>
 		<td>String</td>
-		<td>Recebe as coordenadas do local informados</td>
+		<td>Recebe o nome e coordenadas dos locais que atendem o local informado</td>
 	</tr>
 </table>
