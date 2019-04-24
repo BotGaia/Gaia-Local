@@ -6,10 +6,7 @@ const router = express.Router();
 
 router.get('/local', (req, res) => {
   requestCoords.getCoords(req.query.address).then((value) => {
-    res.json({
-      lat: value.getLatitude(),
-      lng: value.getLongitude(),
-    });
+    res.json(value);
   }).catch((err) => {
     res.send(err);
   });
