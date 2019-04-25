@@ -17,10 +17,10 @@ function bodyToResultsArray(body) {
   try {
     const { total_results: totalResults } = body;
     let resultsArray = '[';
-    let c;
+    let counter;
 
-    for (c = 0; c < totalResults; c += 1) {
-      resultsArray = `${resultsArray}{"name":"${body.results[c].formatted}","lat":${body.results[c].geometry.lat},"lng":${body.results[c].geometry.lng}},`;
+    for (counter = 0; counter < totalResults; counter += 1) {
+      resultsArray = `${resultsArray}{"name":"${body.results[counter].formatted}","lat":${body.results[counter].geometry.lat},"lng":${body.results[counter].geometry.lng}},`;
     }
 
     resultsArray = `${resultsArray.slice(0, -1)}]`;
