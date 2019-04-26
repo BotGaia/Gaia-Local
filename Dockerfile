@@ -1,5 +1,6 @@
 FROM node:latest
 RUN mkdir /app
+ENV ENVIRONMENT=dev
 WORKDIR /app
 COPY package*.json /app/
 RUN npm install
