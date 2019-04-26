@@ -1,5 +1,4 @@
 const express = require('express');
-
 const requestCoords = require('./requests/requestCoords');
 
 const router = express.Router();
@@ -14,4 +13,13 @@ router.get('/local', (req, res) => {
     res.send(err);
   });
 });
+
+router.get('/listLocales', (req, res) => {
+  requestCoords.getLocales(req.query.address).then((value) => {
+    res.json(value);
+  }).catch((err) => {
+    res.send(err);
+  });
+});
+
 module.exports = app => app.use('/', router);

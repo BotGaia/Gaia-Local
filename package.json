@@ -14,11 +14,11 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.4",
-    "mongoose": "^5.4.20",
-    "chai-http": "^4.2.1",
     "chai": "^4.2.0",
-    "mocha": "^6.0.2"
+    "chai-http": "^4.2.1",
+    "express": "^4.16.4",
+    "mocha": "^6.1.4",
+    "mongoose": "^5.4.20"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
