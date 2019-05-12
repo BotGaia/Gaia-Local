@@ -10,7 +10,7 @@ module.exports = {
             type: 'string',
           },
         ],
-        description: 'Recebe o nome de um local e retorna as coordenadas do local informado',
+        description: 'Receives a location and return its coordinates',
       },
       {
         type: 'GET',
@@ -21,7 +21,7 @@ module.exports = {
             type: 'string',
           },
         ],
-        description: 'Recebe o nome de um local e retorna uma lista com os possíveis locais',
+        description: 'Receives a location and returns a list with all possible locations',
       },
     ];
 
