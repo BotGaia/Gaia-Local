@@ -26,7 +26,8 @@ testCheck:
   stage: test
   script:
     - docker-compose run gaialocal /bin/sh -c "cd /app; npm i; npm run test"
-
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  
 staticAnalysis:
   stage: quality
   script:

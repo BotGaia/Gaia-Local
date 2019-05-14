@@ -33,11 +33,11 @@ Após instalar o docker rode o projeto como desenvolvimento da seguinte maneira:
 
 Para rodar os testes, utilize:
 
-``` $ sudo docker-compose run gaialocal /bin/sh -c "cd /app; npm i; npm run test" ```
+``` $ sudo docker-compose run gaialocal npm run test ```
 
 Para rodar a folha de estilo, utilize este comando:
 
-``` $ sudo docker-compose run gaialocal /bin/sh -c "cd /app; npm i; npm run lint" ```
+``` $ sudo docker-compose run gaialocal npm run lint ```
 
 ### Endpoints
 
