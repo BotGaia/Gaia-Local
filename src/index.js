@@ -11,10 +11,6 @@ mongooseConnection.connect();
 
 require('./routes')(app);
 
-app.get('/', (req, res) => {
-  res.json({ Hello: 'World' });
-});
-
 app.listen(3001);
 
 module.exports = app;

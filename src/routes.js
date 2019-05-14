@@ -1,7 +1,12 @@
 const express = require('express');
 const requestCoords = require('./requests/requestCoords');
+const endpoints = require('./utils/endpoints');
 
 const router = express.Router();
+
+router.get('/', (req, res) => {
+  res.json(endpoints.getJson());
+});
 
 router.get('/local', (req, res) => {
   requestCoords.getCoords(req.query.address).then((value) => {
