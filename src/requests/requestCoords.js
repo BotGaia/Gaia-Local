@@ -1,5 +1,6 @@
 const https = require('https');
 const Local = require('../models/Local');
+const haversine = require('../utils/haversine');
 
 const key = process.env.API_KEY;
 
