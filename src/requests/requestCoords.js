@@ -4,6 +4,10 @@ const haversine = require('../utils/haversine');
 
 const key = process.env.API_KEY;
 
+function toRadians(num) {
+  return num * (Math.PI/180);
+}
+
 function bodyToLocal(body, local) {
   try {
     local.setLongitude(body.results[0].geometry.lng);
@@ -16,18 +20,40 @@ function bodyToLocal(body, local) {
 
 function bodyToResultsArray(body) {
   try {
-    const { total_results: totalResults } = body;
-    let resultsArray = '[';
-    let counter;
+    const { results } = body;
+    const { total_results : totalResults } = body;
+    const resultsArray = [];
+    const radius = 5;
 
-    for (counter = 0; counter < totalResults; counter += 1) {
-      resultsArray = `${resultsArray}{"name":"${body.results[counter].formatted}","lat":${body.results[counter].geometry.lat},"lng":${body.results[counter].geometry.lng}},`;
-    }
+    results.forEach((value, index) => {
+      results[index].isChecked = 0;
+    });
 
-    resultsArray = `${resultsArray.slice(0, -1)}]`;
+    results.forEach((value, index) => {
+      if(!results[index].isChecked) {
+        const selector = [];
 
-    return JSON.parse(resultsArray);
+        results[index].isChecked = 1;
+        selector.push(index);
+
+        results.forEach((value2, index2) => {
+          if((index != index2)) {
+            const lat = [toRadians(results[index].geometry.lat), toRadians(results[index2].geometry.lat)];
+            const lng = [toRadians(results[index].geometry.lng), toRadians(results[index2].geometry.lng)];
+
+            if(haversine.distance(lat, lng) <= radius) {
+              selector.push(index2);
+            }
+          }
+        });
+
+        //resultsArray.push(results[treatResults(results, selector)]);
+      }
+    });
+
+    return resultsArray;
   } catch (err) {
+    console.log(err);
     return JSON.parse('[{"name":"error","lat":"error","lng":"error"}]');
   }
 }
