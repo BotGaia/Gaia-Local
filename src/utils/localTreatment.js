@@ -1,96 +1,102 @@
-const Local = require('../models/Local');
 const math = require('./math');
 
-function treatResults(results, selector, userInput) {
+function treatResults(resultsArray, selector, input) {
   let highestIndex;
   let highestScore = -100;
-  userInput = userInput.toLowerCase();
+  const results = resultsArray;
+  const userInput = input.toLowerCase();
 
-  if(selector.length == 1) {
+  if (selector.length === 1) {
     return selector[0];
   }
 
   selector.forEach((index) => {
-    if(results[index].components.country) {
-      if(new RegExp((results[index].components.country).toLowerCase()).test(userInput)) {
+    if (results[index].components.country) {
+      if (new RegExp((results[index].components.country).toLowerCase()).test(userInput)) {
         results[index].score += 1;
-      }
-
-      else {
-        if(results[index].components.country_code) {
-          if(new RegExp(`\\b${(results[index].components.country_code).toLowerCase()}\\b`).test(userInput)) {
-            results[index].score += 1;
-          }
-
-          else {
-            results[index].score -= 1;
-          }
+      } else if (results[index].components.country_code) {
+        if (new RegExp(`\\b${(results[index].components.country_code).toLowerCase()}\\b`).test(userInput)) {
+          results[index].score += 1;
+        } else {
+          results[index].score -= 1;
         }
-
-        else {
-          results[index].score -= 1
-        }
+      } else {
+        results[index].score -= 1;
       }
     }
 
-      if(results[index].components.state) {
-          if(new RegExp((results[index].components.state).toLowerCase()).test(userInput)) {
-            results[index].score += 1;
-          }
-
-          else {
-            if(results[index].components.state_code) {
-              if(new RegExp(`\\b${(results[index].components.state_code).toLowerCase()}\\b`).test(userInput)) {
-                results[index].score += 1;
-              }
-
-              else {
-                results[index].score -= 1;
-              }
-            }
-
-            else {
-              results[index].score -= 1
-            }
-          }
-        }
-
-      if(results[index].components.city) {
-          if(new RegExp((results[index].components.city).toLowerCase()).test(userInput)) {
-            results[index].score += 1;
-          }
-
-          else {
-            if(results[index].components.city_code) {
-              if(new RegExp(`\\b${(results[index].components.city_code).toLowerCase()}\\b`).test(userInput)) {
-                results[index].score += 1;
-              }
-
-              else {
-                results[index].score -= 1;
-              }
-            }
-
-            else {
-              results[index].score -= 1
-            }
-          }
-        }
-
-      if(results[index].components.road) {
-        if(new RegExp((results[index].components.road).toLowerCase()).test(userInput)) {
+    if (results[index].components.state) {
+      if (new RegExp((results[index].components.state).toLowerCase()).test(userInput)) {
+        results[index].score += 1;
+      } else if (results[index].components.state_code) {
+        if (new RegExp(`\\b${(results[index].components.state_code).toLowerCase()}\\b`).test(userInput)) {
           results[index].score += 1;
-        }
-
-        else {
+        } else {
           results[index].score -= 1;
         }
+      } else {
+        results[index].score -= 1;
       }
+    }
 
-      if(results[index].score > highestScore) {
-        highestScore = results[index].score;
-        highestIndex = index;
+    if (results[index].components.city) {
+      if (new RegExp((results[index].components.city).toLowerCase()).test(userInput)) {
+        results[index].score += 1;
+      } else if (results[index].components.city_code) {
+        if (new RegExp(`\\b${(results[index].components.city_code).toLowerCase()}\\b`).test(userInput)) {
+          results[index].score += 1;
+        } else {
+          results[index].score -= 1;
+        }
+      } else {
+        results[index].score -= 1;
       }
+    }
+
+    if (results[index].components.road) {
+      if (new RegExp((results[index].components.road).toLowerCase()).test(userInput)) {
+        results[index].score += 1;
+      } else {
+        results[index].score -= 1;
+      }
+    }
+
+    if (results[index].components.suburb) {
+      if (new RegExp((results[index].components.suburb).toLowerCase()).test(userInput)) {
+        results[index].score += 1;
+      } else {
+        results[index].score -= 1;
+      }
+    }
+
+    if (results[index].components.village) {
+      if (new RegExp((results[index].components.village).toLowerCase()).test(userInput)) {
+        results[index].score += 1;
+      } else {
+        results[index].score -= 1;
+      }
+    }
+
+    if (results[index].components.neighbourhood) {
+      if (new RegExp((results[index].components.neighbourhood).toLowerCase()).test(userInput)) {
+        results[index].score += 1;
+      } else {
+        results[index].score -= 1;
+      }
+    }
+
+    if (results[index].components.town) {
+      if (new RegExp((results[index].components.town).toLowerCase()).test(userInput)) {
+        results[index].score += 1;
+      } else {
+        results[index].score -= 1;
+      }
+    }
+
+    if (results[index].score > highestScore) {
+      highestScore = results[index].score;
+      highestIndex = index;
+    }
   });
 
   return highestIndex;
@@ -99,11 +105,11 @@ function treatResults(results, selector, userInput) {
 module.exports = {
   bodyToLocal: (body, local) => {
     try {
-	    local.setLongitude(body.results[0].geometry.lng);
-	    local.setLatitude(body.results[0].geometry.lat);
+      local.setLongitude(body.results[0].geometry.lng);
+      local.setLatitude(body.results[0].geometry.lat);
     } catch (error) {
-	    local.setLongitude('error');
-	    local.setLatitude('error');
+      local.setLongitude('error');
+      local.setLatitude('error');
     }
   },
 
@@ -119,21 +125,22 @@ module.exports = {
       });
 
       results.forEach((value, index) => {
-        if(!results[index].isChecked) {
+        if (!results[index].isChecked) {
           const selector = [];
 
           results[index].isChecked = 1;
           selector.push(index);
 
           results.forEach((value2, index2) => {
-            if((index != index2)) {
-              const lat = [math.toRadians(results[index].geometry.lat), math.toRadians(results[index2].geometry.lat)];
-              const lng = [math.toRadians(results[index].geometry.lng), math.toRadians(results[index2].geometry.lng)];
+            if ((index !== index2) && (!results[index2].isChecked)) {
+              const lat = [math.toRadians(results[index].geometry.lat),
+                math.toRadians(results[index2].geometry.lat)];
+              const lng = [math.toRadians(results[index].geometry.lng),
+                math.toRadians(results[index2].geometry.lng)];
 
-              if(math.haversine(lat, lng) <= radius) {
+              if (math.haversine(lat, lng) <= radius) {
                 selector.push(index2);
                 results[index2].isChecked = 1;
-                console.log('close');
               }
             }
           });
@@ -142,7 +149,7 @@ module.exports = {
         }
       });
 
-     resultsArray.forEach((value, index) => {
+      resultsArray.forEach((value, index) => {
         delete resultsArray[index].annotations;
         delete resultsArray[index].bounds;
         delete resultsArray[index].components;
@@ -156,8 +163,7 @@ module.exports = {
 
       return resultsArray;
     } catch (err) {
-      console.log(err);
       return JSON.parse('[{"name":"error","lat":"error","lng":"error"}]');
     }
-  }
+  },
 };
