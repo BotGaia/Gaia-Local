@@ -1,97 +1,49 @@
 const math = require('./math');
 
+function searchParameter(parameter, parameterCode, userInput) {
+  if (parameter) {
+    if (new RegExp((parameter).toLowerCase()).test(userInput)) {
+      return 1;
+    } else if (parameterCode) {
+      if (new RegExp(`\\b${(parameterCode).toLowerCase()}\\b`).test(userInput)) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } else {
+      return 0;
+    }
+  }
+
+  return -1;
+}
+
 function treatResults(resultsArray, selector, input) {
   let highestIndex;
   let highestScore = -100;
   const results = resultsArray;
   const userInput = input.toLowerCase();
+  const parameters = [['country', 'country_code'], ['state', 'state_code'], ['city', 'city_code'],
+    ['road', undefined], ['suburb', undefined], ['village', undefined], ['neighbourhood', undefined],
+    ['town', undefined]];
 
   if (selector.length === 1) {
     return selector[0];
   }
 
   selector.forEach((index) => {
-    if (results[index].components.country) {
-      if (new RegExp((results[index].components.country).toLowerCase()).test(userInput)) {
-        results[index].score += 1;
-      } else if (results[index].components.country_code) {
-        if (new RegExp(`\\b${(results[index].components.country_code).toLowerCase()}\\b`).test(userInput)) {
-          results[index].score += 1;
-        } else {
+    parameters.forEach((parameter) => {
+      switch (searchParameter(results[index].components[parameter[0]],
+        results[index].components[parameter[1]], userInput)) {
+        case 0:
           results[index].score -= 1;
-        }
-      } else {
-        results[index].score -= 1;
-      }
-    }
-
-    if (results[index].components.state) {
-      if (new RegExp((results[index].components.state).toLowerCase()).test(userInput)) {
-        results[index].score += 1;
-      } else if (results[index].components.state_code) {
-        if (new RegExp(`\\b${(results[index].components.state_code).toLowerCase()}\\b`).test(userInput)) {
+          break;
+        case 1:
           results[index].score += 1;
-        } else {
-          results[index].score -= 1;
-        }
-      } else {
-        results[index].score -= 1;
+          break;
+        default:
       }
-    }
-
-    if (results[index].components.city) {
-      if (new RegExp((results[index].components.city).toLowerCase()).test(userInput)) {
-        results[index].score += 1;
-      } else if (results[index].components.city_code) {
-        if (new RegExp(`\\b${(results[index].components.city_code).toLowerCase()}\\b`).test(userInput)) {
-          results[index].score += 1;
-        } else {
-          results[index].score -= 1;
-        }
-      } else {
-        results[index].score -= 1;
-      }
-    }
-
-    if (results[index].components.road) {
-      if (new RegExp((results[index].components.road).toLowerCase()).test(userInput)) {
-        results[index].score += 1;
-      } else {
-        results[index].score -= 1;
-      }
-    }
-
-    if (results[index].components.suburb) {
-      if (new RegExp((results[index].components.suburb).toLowerCase()).test(userInput)) {
-        results[index].score += 1;
-      } else {
-        results[index].score -= 1;
-      }
-    }
-
-    if (results[index].components.village) {
-      if (new RegExp((results[index].components.village).toLowerCase()).test(userInput)) {
-        results[index].score += 1;
-      } else {
-        results[index].score -= 1;
-      }
-    }
-
-    if (results[index].components.neighbourhood) {
-      if (new RegExp((results[index].components.neighbourhood).toLowerCase()).test(userInput)) {
-        results[index].score += 1;
-      } else {
-        results[index].score -= 1;
-      }
-    }
-
-    if (results[index].components.town) {
-      if (new RegExp((results[index].components.town).toLowerCase()).test(userInput)) {
-        results[index].score += 1;
-      } else {
-        results[index].score -= 1;
-      }
-    }
+    });
 
     if (results[index].score > highestScore) {
       highestScore = results[index].score;
@@ -100,6 +52,24 @@ function treatResults(resultsArray, selector, input) {
   });
 
   return highestIndex;
+}
+
+function cleanArray(array) {
+  const resultsArray = array;
+
+  resultsArray.forEach((value, index) => {
+    delete resultsArray[index].annotations;
+    delete resultsArray[index].bounds;
+    delete resultsArray[index].components;
+    delete resultsArray[index].confidence;
+    delete resultsArray[index].isChecked;
+    delete resultsArray[index].score;
+    resultsArray[index].lat = resultsArray[index].geometry.lat;
+    resultsArray[index].lng = resultsArray[index].geometry.lng;
+    delete resultsArray[index].geometry;
+  });
+
+  return resultsArray;
 }
 
 module.exports = {
@@ -149,19 +119,7 @@ module.exports = {
         }
       });
 
-      resultsArray.forEach((value, index) => {
-        delete resultsArray[index].annotations;
-        delete resultsArray[index].bounds;
-        delete resultsArray[index].components;
-        delete resultsArray[index].confidence;
-        delete resultsArray[index].isChecked;
-        delete resultsArray[index].score;
-        resultsArray[index].lat = resultsArray[index].geometry.lat;
-        resultsArray[index].lng = resultsArray[index].geometry.lng;
-        delete resultsArray[index].geometry;
-      });
-
-      return resultsArray;
+      return cleanArray(resultsArray);
     } catch (err) {
       return JSON.parse('[{"name":"error","lat":"error","lng":"error"}]');
     }
