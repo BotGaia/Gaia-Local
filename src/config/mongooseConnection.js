@@ -16,7 +16,14 @@ module.exports = {
       bufferMaxEntries: 0,
       useNewUrlParser: true,
     };
-    mongoose.connect('mongodb://mongo:27017/admin', options).then(() => {
-    }).catch();
+
+    if (process.env.ENVIRONMENT === 'dev') {
+      mongoose.connect('mongodb://mongo:27017/admin', options).then(() => {
+      }).catch();
+    } else if (process.env.ENVIRONMENT === 'homolog') {
+      mongoose.connect(`mongodb://${process.env.USER_DB}:${process.env.PASS_DB}@35.188.16.121/${process.env.DB}`,
+        { useNewUrlParser: true }).then(() => {
+      }).catch();
+    }
   },
 };

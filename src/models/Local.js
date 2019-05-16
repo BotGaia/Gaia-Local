@@ -41,7 +41,9 @@ module.exports = class Local {
   }
 
   saveLocal() {
-    this.local.save();
+    if (this.local.latitude !== 'error' || this.local.longitude !== 'error') {
+      this.local.save();
+    }
   }
 
   findMe() {

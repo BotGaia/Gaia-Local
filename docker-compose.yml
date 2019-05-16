@@ -1,11 +1,15 @@
-version: '2'
+version: '3'
 
 services:
-  app:
-    image: caleberios/wendy_node:latest
+  gaialocal:
+    image: caleberios/gaia-local:homolog
     restart: always
     environment:
       - API_KEY=${API_KEY}
+      - ENVIRONMENT=dev
+      - USER_DB=gaialocal
+      - PASS_DB=admin123
+      - DB=gaialocal
     volumes:
       - .:/app
       - /app/node_modules

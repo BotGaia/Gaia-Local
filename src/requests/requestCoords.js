@@ -15,7 +15,42 @@ function bodyToLocal(body, local) {
   }
 }
 
+function bodyToResultsArray(body) {
+  try {
+    const { total_results: totalResults } = body;
+    let resultsArray = '[';
+    let counter;
+
+    for (counter = 0; counter < totalResults; counter += 1) {
+      resultsArray = `${resultsArray}{"name":"${body.results[counter].formatted}","lat":${body.results[counter].geometry.lat},"lng":${body.results[counter].geometry.lng}},`;
+    }
+
+    resultsArray = `${resultsArray.slice(0, -1)}]`;
+
+    return JSON.parse(resultsArray);
+  } catch (err) {
+    return JSON.parse('[{"name":"error","lat":"error","lng":"error"}]');
+  }
+}
+
 module.exports = {
+  getLocales: (name) => {
+    let data = '';
+    let results;
+    return new Promise((resolve) => {
+      https.get(`https://api.opencagedata.com/geocode/v1/json?q=${name}&key=${key}`, (resp) => {
+        resp.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        resp.on('end', () => {
+          results = bodyToResultsArray(JSON.parse(data));
+          resolve(results);
+        });
+      });
+    });
+  },
+
   getCoords: (name) => {
     const local = new Local(name);
     let data = '';
