@@ -4,15 +4,13 @@ function searchParameter(parameter, parameterCode, userInput) {
   if (parameter) {
     if (new RegExp((parameter).toLowerCase()).test(userInput)) {
       return 1;
-    } else if (parameterCode) {
+    } if (parameterCode) {
       if (new RegExp(`\\b${(parameterCode).toLowerCase()}\\b`).test(userInput)) {
         return 1;
-      } else {
-        return 0;
       }
-    } else {
       return 0;
     }
+    return 0;
   }
 
   return -1;
@@ -108,7 +106,9 @@ module.exports = {
               const lng = [math.toRadians(results[index].geometry.lng),
                 math.toRadians(results[index2].geometry.lng)];
 
-              if (math.haversine(lat, lng) <= radius) {
+              if ((math.haversine(lat, lng) <= radius)
+              && ((results[index].components.city === results[index2].components.city)
+              || !(results[index].components.city && results[index2].components.city))) {
                 selector.push(index2);
                 results[index2].isChecked = 1;
               }
