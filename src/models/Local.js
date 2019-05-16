@@ -12,6 +12,14 @@ module.exports = class Local {
     });
   }
 
+  setName(name){
+    this.local.name = name;
+  }
+
+  getName(){
+    return this.local.name = name;
+  }
+
   setLatitude(latitude) {
     this.local.latitude = latitude;
   }

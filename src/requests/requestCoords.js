@@ -1,10 +1,12 @@
 const https = require('https');
 const Local = require('../models/Local');
+const treat = require('../utils/localTreatment');
 
 const key = process.env.API_KEY;
 
 function bodyToLocal(body, local) {
   try {
+    local.setName(treat.treatPostCode(body.licenses[0].name))
     local.setLongitude(body.results[0].geometry.lng);
     local.setLatitude(body.results[0].geometry.lat);
   } catch (error) {
