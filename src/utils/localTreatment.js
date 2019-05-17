@@ -1,4 +1,4 @@
-const math = require('./math');
+const math = require('./localTreatmentMath');
 
 function searchParameter(parameter, parameterCode, userInput) {
   if (parameter) {
@@ -16,6 +16,23 @@ function searchParameter(parameter, parameterCode, userInput) {
   return -1;
 }
 
+function scoreParameter(parameters, resultsArray, index, userInput) {
+  const results = resultsArray;
+
+  parameters.forEach((parameter) => {
+    switch (searchParameter(results[index].components[parameter[0]],
+      results[index].components[parameter[1]], userInput)) {
+      case 0:
+        results[index].score -= 1;
+        break;
+      case 1:
+        results[index].score += 1;
+        break;
+      default:
+    }
+  });
+}
+
 function treatResults(resultsArray, selector, input) {
   let highestIndex;
   let highestScore = -100;
@@ -30,18 +47,7 @@ function treatResults(resultsArray, selector, input) {
   }
 
   selector.forEach((index) => {
-    parameters.forEach((parameter) => {
-      switch (searchParameter(results[index].components[parameter[0]],
-        results[index].components[parameter[1]], userInput)) {
-        case 0:
-          results[index].score -= 1;
-          break;
-        case 1:
-          results[index].score += 1;
-          break;
-        default:
-      }
-    });
+    scoreParameter(parameters, results, index, userInput);
 
     if (results[index].score > highestScore) {
       highestScore = results[index].score;
@@ -70,6 +76,38 @@ function cleanArray(array) {
   return resultsArray;
 }
 
+function selectResults(allResults, resultsArray, userInput) {
+  const results = allResults;
+  const radius = 10;
+
+  results.forEach((value, index) => {
+    if (!results[index].isChecked) {
+      const selector = [];
+
+      results[index].isChecked = 1;
+      selector.push(index);
+
+      results.forEach((value2, index2) => {
+        if ((index !== index2) && (!results[index2].isChecked)) {
+          const lat = [math.toRadians(results[index].geometry.lat),
+            math.toRadians(results[index2].geometry.lat)];
+          const lng = [math.toRadians(results[index].geometry.lng),
+            math.toRadians(results[index2].geometry.lng)];
+
+          if ((math.haversine(lat, lng) <= radius)
+          && ((results[index].components.city === results[index2].components.city)
+          || !(results[index].components.city && results[index2].components.city))) {
+            selector.push(index2);
+            results[index2].isChecked = 1;
+          }
+        }
+      });
+
+      resultsArray.push(results[treatResults(results, selector, userInput)]);
+    }
+  });
+}
+
 module.exports = {
   bodyToLocal: (body, local) => {
     try {
@@ -85,39 +123,13 @@ module.exports = {
     try {
       const { results } = body;
       const resultsArray = [];
-      const radius = 10;
 
       results.forEach((value, index) => {
         results[index].isChecked = 0;
         results[index].score = 0;
       });
 
-      results.forEach((value, index) => {
-        if (!results[index].isChecked) {
-          const selector = [];
-
-          results[index].isChecked = 1;
-          selector.push(index);
-
-          results.forEach((value2, index2) => {
-            if ((index !== index2) && (!results[index2].isChecked)) {
-              const lat = [math.toRadians(results[index].geometry.lat),
-                math.toRadians(results[index2].geometry.lat)];
-              const lng = [math.toRadians(results[index].geometry.lng),
-                math.toRadians(results[index2].geometry.lng)];
-
-              if ((math.haversine(lat, lng) <= radius)
-              && ((results[index].components.city === results[index2].components.city)
-              || !(results[index].components.city && results[index2].components.city))) {
-                selector.push(index2);
-                results[index2].isChecked = 1;
-              }
-            }
-          });
-
-          resultsArray.push(results[treatResults(results, selector, userInput)]);
-        }
-      });
+      selectResults(results, resultsArray, userInput);
 
       return cleanArray(resultsArray);
     } catch (err) {
