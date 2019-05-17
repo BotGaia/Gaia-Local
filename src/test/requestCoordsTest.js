@@ -1,7 +1,6 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-
 const chai = require('chai');
 const Coords = require('../requests/requestCoords.js');
 
@@ -14,7 +13,6 @@ describe('Coords List', () => {
       should.equal(lat, -10.3333333);
       done();
     });
-
   }).timeout(5000);
 
   it('get first value from latitude list', (done) => {

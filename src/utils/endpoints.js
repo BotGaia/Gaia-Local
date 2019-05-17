@@ -24,7 +24,6 @@ module.exports = {
         description: 'Receives a location and returns a list with all possible locations',
       },
     ];
-
     return endpoints;
   },
 };

@@ -46,7 +46,6 @@ module.exports = class Local {
           this.local = local;
           resolve(true);
         }
-
         resolve(false);
       });
     });

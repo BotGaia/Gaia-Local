@@ -12,7 +12,6 @@ function searchParameter(parameter, parameterCode, userInput) {
     }
     return 0;
   }
-
   return -1;
 }
 
@@ -54,7 +53,6 @@ function treatResults(resultsArray, selector, input) {
       highestIndex = index;
     }
   });
-
   return highestIndex;
 }
 
@@ -72,7 +70,6 @@ function cleanArray(array) {
     resultsArray[index].lng = resultsArray[index].geometry.lng;
     delete resultsArray[index].geometry;
   });
-
   return resultsArray;
 }
 
@@ -95,14 +92,13 @@ function selectResults(allResults, resultsArray, userInput) {
             math.toRadians(results[index2].geometry.lng)];
 
           if ((math.haversine(lat, lng) <= radius)
-          && ((results[index].components.city === results[index2].components.city)
-          || !(results[index].components.city && results[index2].components.city))) {
+            && ((results[index].components.city === results[index2].components.city)
+              || !(results[index].components.city && results[index2].components.city))) {
             selector.push(index2);
             results[index2].isChecked = 1;
           }
         }
       });
-
       resultsArray.push(results[treatResults(results, selector, userInput)]);
     }
   });
@@ -128,9 +124,7 @@ module.exports = {
         results[index].isChecked = 0;
         results[index].score = 0;
       });
-
       selectResults(results, resultsArray, userInput);
-
       return cleanArray(resultsArray);
     } catch (err) {
       return JSON.parse('[{"name":"error","lat":"error","lng":"error"}]');
