@@ -83,6 +83,7 @@ function cleanArray(array) {
     resultsArray[index].lat = resultsArray[index].geometry.lat;
     resultsArray[index].lng = resultsArray[index].geometry.lng;
     delete resultsArray[index].geometry;
+    resultsArray[index].formatted = resultsArray[index].formatted.toString().replace(/,,/g, ',').replace(/-,/g, ',');
   });
 
   return resultsArray;
