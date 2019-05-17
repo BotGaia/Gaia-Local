@@ -17,11 +17,12 @@ function searchParameter(parameter, parameterCode, userInput) {
   return -1;
 }
 
-function treatPostCode (name){
-  let formattedName = [];
-  let body = name.split(',');
-  body.forEach(function (item) {
-      formattedName.push(item.replace(/[.,\/ -]\d+/g, ''));
+function treatPostCode(name) {
+  const formattedName = [];
+  const body = name.split(',');
+
+  body.forEach((item) => {
+    formattedName.push(item.replace(/[., -]\d+/g, ''));
   });
 
   return formattedName;
@@ -50,8 +51,8 @@ function treatResults(resultsArray, selector, input) {
   const results = resultsArray;
   const userInput = input.toLowerCase();
   const parameters = [['country', 'country_code'], ['state', 'state_code'], ['city', 'city_code'],
-  ['road', undefined], ['suburb', undefined], ['village', undefined], ['neighbourhood', undefined],
-  ['town', undefined]];
+    ['road', undefined], ['suburb', undefined], ['village', undefined], ['neighbourhood', undefined],
+    ['town', undefined]];
 
   if (selector.length === 1) {
     return selector[0];
@@ -103,9 +104,9 @@ function selectResults(allResults, resultsArray, userInput) {
       results.forEach((value2, index2) => {
         if ((index !== index2) && (!results[index2].isChecked)) {
           const lat = [math.toRadians(results[index].geometry.lat),
-          math.toRadians(results[index2].geometry.lat)];
+            math.toRadians(results[index2].geometry.lat)];
           const lng = [math.toRadians(results[index].geometry.lng),
-          math.toRadians(results[index2].geometry.lng)];
+            math.toRadians(results[index2].geometry.lng)];
 
           if ((math.haversine(lat, lng) <= radius)
             && ((results[index].components.city === results[index2].components.city)
@@ -120,8 +121,8 @@ function selectResults(allResults, resultsArray, userInput) {
     }
   });
 }
-
 module.exports = {
+
   bodyToLocal: (body, local) => {
     try {
       local.setName(treatPostCode(body.results[0].formatted));
