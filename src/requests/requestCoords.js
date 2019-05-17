@@ -10,6 +10,7 @@ function bodyToLocal(body, local) {
     local.setLongitude(body.results[0].geometry.lng);
     local.setLatitude(body.results[0].geometry.lat);
   } catch (error) {
+    local.setName('error');
     local.setLongitude('error');
     local.setLatitude('error');
   }
@@ -22,7 +23,7 @@ function bodyToResultsArray(body) {
     let counter;
 
     for (counter = 0; counter < totalResults; counter += 1) {
-      resultsArray = `${resultsArray}{"name":"${body.results[counter].formatted}","lat":${body.results[counter].geometry.lat},"lng":${body.results[counter].geometry.lng}},`;
+      resultsArray = `${resultsArray}{"name":"${treat.treatPostCode(body.results[counter].formatted)}","lat":${body.results[counter].geometry.lat},"lng":${body.results[counter].geometry.lng}},`;
     }
 
     resultsArray = `${resultsArray.slice(0, -1)}]`;
