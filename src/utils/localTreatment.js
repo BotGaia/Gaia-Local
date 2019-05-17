@@ -109,7 +109,7 @@ function selectResults(allResults, resultsArray, userInput) {
 }
 
 module.exports = {
-  bodyToLocal: (body, local) => {
+  bodyParseLocal: (body, local) => {
     try {
       local.setLongitude(body.results[0].geometry.lng);
       local.setLatitude(body.results[0].geometry.lat);
@@ -119,7 +119,7 @@ module.exports = {
     }
   },
 
-  bodyToResultsArray: (body, userInput) => {
+  bodyParseArray: (body, userInput) => {
     try {
       const { results } = body;
       const resultsArray = [];

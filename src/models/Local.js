@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const LocalSchema = require('../db/localSchema');
+const LocalSchema = require('../schemas/localSchema');
 
 const LocalModel = mongoose.model('LocalModel', LocalSchema);
 

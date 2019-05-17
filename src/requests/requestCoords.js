@@ -15,7 +15,7 @@ module.exports = {
         });
 
         resp.on('end', () => {
-          results = treat.bodyToResultsArray(JSON.parse(data), name);
+          results = treat.bodyParseArray(JSON.parse(data), name);
           resolve(results);
         });
       });
@@ -37,7 +37,7 @@ module.exports = {
             });
             resp.on('end', () => {
               body = JSON.parse(data);
-              treat.bodyToLocal(body, local);
+              treat.bodyParseLocal(body, local);
               local.saveLocal();
               resolve(local);
             });
