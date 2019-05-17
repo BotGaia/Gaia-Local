@@ -80,11 +80,12 @@ function cleanArray(array) {
     delete resultsArray[index].confidence;
     delete resultsArray[index].isChecked;
     delete resultsArray[index].score;
-    resultsArray[index].formatted = treatPostCode(resultsArray[index].formatted);
+    resultsArray[index].name = treatPostCode(resultsArray[index].formatted);
     resultsArray[index].lat = resultsArray[index].geometry.lat;
     resultsArray[index].lng = resultsArray[index].geometry.lng;
     delete resultsArray[index].geometry;
-    resultsArray[index].formatted = resultsArray[index].formatted.toString().replace(/,,/g, ',').replace(/-,/g, ',');
+    resultsArray[index].name = resultsArray[index].name.toString().replace(/,,/g, ',').replace(/-,/g, ',');
+    delete resultsArray[index].formatted;
   });
 
   return resultsArray;
