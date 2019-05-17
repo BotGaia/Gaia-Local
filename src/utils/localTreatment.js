@@ -1,4 +1,4 @@
-const math = require('./localTreatmentMath');
+const math = require('./localMath');
 
 function searchParameter(parameter, parameterCode, userInput) {
   if (parameter) {
