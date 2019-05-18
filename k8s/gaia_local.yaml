@@ -25,16 +25,16 @@ spec:
     spec:
       containers:
       - env:
-               - name: API_KEY
-          value: ${API_KEY}
+        - name: API_KEY
+          value: {{API_KEY}}
         - name: DB
-          value: ${DB}
+          value: {{DB}}
         - name: ENVIRONMENT
           value: production
         - name: PASS_DB
-          value: ${PASS_DB}
+          value: {{PASS_DB}}
         - name: USER_DB
-          value: ${USER_DB}
+          value: {{USER_DB}}
         image: caleberios/gaia-local:latest
         imagePullPolicy: Always
         name: gaia-local
