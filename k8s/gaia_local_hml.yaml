@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gaia-local-hml
+spec:
+  ports:
+  - port: 443
+    targetPort: 3001
+  selector:
+    app: gaia-local-hml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gaia-local-hml
+spec:
+  selector:
+    matchLabels:
+      app: gaia-local-hml
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: gaia-local-hml
+    spec:
+      containers:
+      - env:
+        - name: API_KEY
+          value: ${API_KEY}
+        - name: DB
+          value: ${DB}
+        - name: ENVIRONMENT
+          value: homolog
+        - name: PASS_DB
+          value: ${PASS_DB}
+        - name: USER_DB
+          value: ${USER_DB}
+        image: caleberios/gaia-local:homolog
+        imagePullPolicy: Always
+        name: gaia-local-hml
+        ports:
+        - containerPort: 3001
