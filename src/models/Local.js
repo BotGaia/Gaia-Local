@@ -4,12 +4,20 @@ const LocalSchema = require('../db/localSchema');
 const LocalModel = mongoose.model('LocalModel', LocalSchema);
 
 module.exports = class Local {
-  constructor(name) {
+  constructor() {
     this.local = new LocalModel({
-      name,
+      name: '',
       latitude: '',
       longitude: '',
     });
+  }
+
+  setName(name) {
+    this.local.name = name;
+  }
+
+  getName() {
+    return this.local.name;
   }
 
   setLatitude(latitude) {
