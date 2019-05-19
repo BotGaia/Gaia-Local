@@ -1,5 +1,6 @@
 const math = require('./localMath');
 
+
 function searchParameter(parameter, parameterCode, userInput) {
   if (parameter) {
     if (new RegExp((parameter).toLowerCase()).test(userInput)) {
@@ -13,6 +14,17 @@ function searchParameter(parameter, parameterCode, userInput) {
     return 0;
   }
   return -1;
+}
+
+function treatPostCode(name) {
+  const formattedName = [];
+  const body = name.split(',');
+
+  body.forEach((item) => {
+    formattedName.push(item.replace(/[., -]\d+/g, ''));
+  });
+
+  return formattedName;
 }
 
 function scoreParameter(parameters, resultsArray, index, userInput) {
@@ -66,9 +78,12 @@ function cleanArray(array) {
     delete resultsArray[index].confidence;
     delete resultsArray[index].isChecked;
     delete resultsArray[index].score;
+    resultsArray[index].name = treatPostCode(resultsArray[index].formatted);
     resultsArray[index].lat = resultsArray[index].geometry.lat;
     resultsArray[index].lng = resultsArray[index].geometry.lng;
     delete resultsArray[index].geometry;
+    resultsArray[index].name = resultsArray[index].name.toString().replace(/,,/g, ',').replace(/-,/g, ',');
+    delete resultsArray[index].formatted;
   });
   return resultsArray;
 }
@@ -103,13 +118,14 @@ function selectResults(allResults, resultsArray, userInput) {
     }
   });
 }
-
 module.exports = {
   bodyParseLocal: (body, local) => {
     try {
+      local.setName(treatPostCode(body.results[0].formatted));
       local.setLongitude(body.results[0].geometry.lng);
       local.setLatitude(body.results[0].geometry.lat);
     } catch (error) {
+      local.setName('error');
       local.setLongitude('error');
       local.setLatitude('error');
     }
