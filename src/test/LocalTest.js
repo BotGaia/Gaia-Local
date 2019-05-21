@@ -1,11 +1,10 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-
 const chai = require('chai');
+const Local = require('../models/Local.js');
 
 const should = chai.should();
-const Local = require('../models/Local.js');
 
 describe('setLatitude', () => {
   it('set latitude', () => {

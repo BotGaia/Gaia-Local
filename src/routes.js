@@ -9,10 +9,10 @@ router.get('/', (req, res) => {
 });
 
 router.get('/local', (req, res) => {
-  requestCoords.getCoords(req.query.address).then((value) => {
+  requestCoords.getCoords(req.query.address).then((resultLocal) => {
     res.json({
-      lat: value.getLatitude(),
-      lng: value.getLongitude(),
+      lat: resultLocal.getLatitude(),
+      lng: resultLocal.getLongitude(),
     });
   }).catch((err) => {
     res.send(err);
@@ -20,8 +20,8 @@ router.get('/local', (req, res) => {
 });
 
 router.get('/listLocales', (req, res) => {
-  requestCoords.getLocales(req.query.address).then((value) => {
-    res.json(value);
+  requestCoords.getLocales(req.query.address).then((resultListLocales) => {
+    res.json(resultListLocales);
   }).catch((err) => {
     res.send(err);
   });

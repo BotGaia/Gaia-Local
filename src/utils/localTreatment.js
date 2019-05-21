@@ -13,7 +13,6 @@ function searchParameter(parameter, parameterCode, userInput) {
     }
     return 0;
   }
-
   return -1;
 }
 
@@ -66,7 +65,6 @@ function treatResults(resultsArray, selector, input) {
       highestIndex = index;
     }
   });
-
   return highestIndex;
 }
 
@@ -87,7 +85,6 @@ function cleanArray(array) {
     resultsArray[index].name = resultsArray[index].name.toString().replace(/,,/g, ',').replace(/-,/g, ',');
     delete resultsArray[index].formatted;
   });
-
   return resultsArray;
 }
 
@@ -117,14 +114,12 @@ function selectResults(allResults, resultsArray, userInput) {
           }
         }
       });
-
       resultsArray.push(results[treatResults(results, selector, userInput)]);
     }
   });
 }
 module.exports = {
-
-  bodyToLocal: (body, local) => {
+  bodyParseLocal: (body, local) => {
     try {
       local.setName(treatPostCode(body.results[0].formatted));
       local.setLongitude(body.results[0].geometry.lng);
@@ -136,7 +131,7 @@ module.exports = {
     }
   },
 
-  bodyToResultsArray: (body, userInput) => {
+  bodyParseArray: (body, userInput) => {
     try {
       const { results } = body;
       const resultsArray = [];
@@ -145,9 +140,7 @@ module.exports = {
         results[index].isChecked = 0;
         results[index].score = 0;
       });
-
       selectResults(results, resultsArray, userInput);
-
       return cleanArray(resultsArray);
     } catch (err) {
       return JSON.parse('[{"name":"error","lat":"error","lng":"error"}]');
