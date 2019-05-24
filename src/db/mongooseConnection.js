@@ -4,8 +4,6 @@ module.exports = {
   connect: () => {
     mongoose.Promise = global.Promise;
     const options = {
-      user: 'gaialocal',
-      pass: 'admin123',
       keepAlive: true,
       socketTimeoutMS: 540000,
       autoReconnect: true,

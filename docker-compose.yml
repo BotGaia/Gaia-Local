@@ -18,12 +18,6 @@ services:
   
   mongo:
     image: aashreys/mongo-auth:latest
-    environment:
-      - AUTH=yes
-      - MONGODB_ADMIN_USER=gaialocal
-      - MONGODB_ADMIN_PASS=admin123
-      - MONGODB_APPLICATION_DATABASE=gaialocal
-      - MONGODB_APPLICATION_USER=aashrey
-      - MONGODB_APPLICATION_PASS=admin123
+    command: mongod --port 27017
     ports: 
       - 27017:27017
