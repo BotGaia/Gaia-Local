@@ -26,10 +26,11 @@ buildLocal:
 
 testCheck:
   stage: quality
-  image: node:alpine
+  before_script:
+    - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    - pip install docker-compose
   script:
-    - npm install
-    - npm test
+    - docker-compose run gaialocal npm run test
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   
 staticAnalysis:
