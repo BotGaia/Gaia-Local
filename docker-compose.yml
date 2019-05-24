@@ -2,14 +2,11 @@ version: '3'
 
 services:
   gaialocal:
-    image: caleberios/gaia-local:homolog
+    build: .
     restart: always
     environment:
       - API_KEY=${API_KEY}
       - ENVIRONMENT=dev
-      - USER_DB=gaialocal
-      - PASS_DB=admin123
-      - DB=gaialocal
     volumes:
       - .:/app
       - /app/node_modules
@@ -23,9 +20,9 @@ services:
     image: aashreys/mongo-auth:latest
     environment:
       - AUTH=yes
-      - MONGODB_ADMIN_USER=wendylocal
+      - MONGODB_ADMIN_USER=gaialocal
       - MONGODB_ADMIN_PASS=admin123
-      - MONGODB_APPLICATION_DATABASE=wendylocal
+      - MONGODB_APPLICATION_DATABASE=gaialocal
       - MONGODB_APPLICATION_USER=aashrey
       - MONGODB_APPLICATION_PASS=admin123
     ports: 

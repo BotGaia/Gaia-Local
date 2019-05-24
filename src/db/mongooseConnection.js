@@ -4,7 +4,7 @@ module.exports = {
   connect: () => {
     mongoose.Promise = global.Promise;
     const options = {
-      user: 'wendylocal',
+      user: 'gaialocal',
       pass: 'admin123',
       keepAlive: true,
       socketTimeoutMS: 540000,
@@ -18,7 +18,7 @@ module.exports = {
     };
 
     if (process.env.ENVIRONMENT === 'dev') {
-      mongoose.connect('mongodb://mongo:27017/admin', options).then(() => {
+      mongoose.connect('mongodb://mongo:27017/gaialocal', options).then(() => {
       }).catch();
     } else if (process.env.ENVIRONMENT === 'homolog') {
       mongoose.connect(`mongodb://${process.env.USER_DB}:${process.env.PASS_DB}@35.188.16.121/${process.env.DB}`,
