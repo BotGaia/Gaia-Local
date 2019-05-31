@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const LocalSchema = require('../db/localSchema');
+const LocalSchema = require('../schemas/localSchema');
 
 const LocalModel = mongoose.model('LocalModel', LocalSchema);
 
@@ -10,6 +10,14 @@ module.exports = class Local {
       latitude: '',
       longitude: '',
     });
+  }
+
+  setName(name) {
+    this.local.name = name;
+  }
+
+  getName() {
+    return this.local.name;
   }
 
   setLatitude(latitude) {
@@ -46,7 +54,6 @@ module.exports = class Local {
           this.local = local;
           resolve(true);
         }
-
         resolve(false);
       });
     });

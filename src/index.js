@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongooseConnection = require('./config/mongooseConnection');
+const mongooseConnection = require('./db/mongooseConnection');
 
 const app = express();
 
@@ -10,10 +10,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 mongooseConnection.connect();
 
 require('./routes')(app);
-
-app.get('/', (req, res) => {
-  res.json({ Hello: 'World' });
-});
 
 app.listen(3001);
 
